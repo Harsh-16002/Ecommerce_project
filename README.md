@@ -12,11 +12,15 @@
 ### Contact
 ![Contact](screenshorts/contact.png)
 
-### About
-![about](screenshorts/about.png)
+### Category
+![category](screenshorts/category.png)
 
 ### Project
-![Project](screenshorts/projects.png)
+![Project](screenshorts/products.png)
+
+### Add product
+![Add product](screenshorts/add product.png)
+
 
 
 
