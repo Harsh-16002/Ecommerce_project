@@ -35,7 +35,7 @@
                     <p class="auth-card-copy">Enter your current password to continue.</p>
                 </div>
 
-                <form method="POST" action="{{ route('password.confirm') }}" class="auth-form">
+                <form method="POST" action="{{ route('password.confirm', absolute: false) }}" class="auth-form">
                     @csrf
 
                     <div class="auth-field">

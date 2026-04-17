@@ -50,7 +50,7 @@
                     <p class="auth-card-copy">Fill in your details to start shopping and tracking orders.</p>
                 </div>
 
-                <form method="POST" action="{{ route('register') }}" class="auth-form">
+                <form method="POST" action="{{ route('register', absolute: false) }}" class="auth-form">
                     @csrf
 
                     <div class="auth-grid two">

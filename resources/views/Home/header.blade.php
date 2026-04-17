@@ -28,7 +28,7 @@
                         <a href="{{ route('admin.dashboard') }}" class="text-btn desktop-only">Admin</a>
                     @endif
 
-                    <form action="{{ route('logout') }}" method="POST" class="desktop-only">
+                    <form action="{{ route('logout', absolute: false) }}" method="POST" class="desktop-only">
                         @csrf
                         <button type="submit" class="text-btn">Logout</button>
                     </form>
@@ -89,7 +89,7 @@
                     @endforeach
                 </div>
             @endif
-            <form action="{{ route('logout') }}" method="POST">
+            <form action="{{ route('logout', absolute: false) }}" method="POST">
                 @csrf
                 <button type="submit" class="solid-btn" style="width: 100%;">Logout</button>
             </form>

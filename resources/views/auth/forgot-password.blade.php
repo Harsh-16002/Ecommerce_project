@@ -37,7 +37,7 @@
 
                 <x-auth-session-status class="auth-status" :status="session('status')" />
 
-                <form method="POST" action="{{ route('password.email') }}" class="auth-form">
+                <form method="POST" action="{{ route('password.email', absolute: false) }}" class="auth-form">
                     @csrf
 
                     <div class="auth-field">

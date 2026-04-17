@@ -35,7 +35,7 @@
                     <p class="auth-card-copy">Confirm your email and choose a new password to finish recovery.</p>
                 </div>
 
-                <form method="POST" action="{{ route('password.store') }}" class="auth-form">
+                <form method="POST" action="{{ route('password.store', absolute: false) }}" class="auth-form">
                     @csrf
                     <input type="hidden" name="token" value="{{ $request->route('token') }}">
 

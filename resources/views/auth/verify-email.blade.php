@@ -42,12 +42,12 @@
                 @endif
 
                 <div class="auth-form">
-                    <form method="POST" action="{{ route('verification.send') }}" class="auth-form">
+                    <form method="POST" action="{{ route('verification.send', absolute: false) }}" class="auth-form">
                         @csrf
                         <button type="submit" class="auth-submit">Resend Verification Email</button>
                     </form>
 
-                    <form method="POST" action="{{ route('logout') }}" class="auth-form">
+                    <form method="POST" action="{{ route('logout', absolute: false) }}" class="auth-form">
                         @csrf
                         <button type="submit" class="auth-secondary">Log Out</button>
                     </form>
