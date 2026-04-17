@@ -11,7 +11,7 @@ COPY vite.config.js postcss.config.js tailwind.config.js ./
 
 RUN npm run build
 
-FROM composer:2 AS vendor
+FROM composer:2-php8.3 AS vendor
 
 WORKDIR /app
 
@@ -65,4 +65,3 @@ RUN mkdir -p \
 EXPOSE 10000
 
 CMD ["start-render"]
-
