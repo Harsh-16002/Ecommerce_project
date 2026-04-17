@@ -51,13 +51,14 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 Route::get('product_details/{id}', [HomeController::class, 'product_details']);
+Route::get('/shop', [HomeController::class, 'shop'])->name('shop.index');
+Route::get('/why-us', [HomeController::class, 'why'])->name('why.index');
+Route::get('testimonial', [HomeController::class, 'testimonial'])->name('testimonial.index');
+Route::get('contact-us', [HomeController::class, 'contact_us'])->name('contact-us.index');
+
 Route::get('add_cart/{id}', [HomeController::class, 'add_cart'])->middleware(['auth', 'verified']);
 Route::post('update_cart/{id}', [HomeController::class, 'update_cart'])->middleware(['auth', 'verified'])->name('cart.update');
-Route::get('/shop', [HomeController::class, 'shop'])->name('shop.index')->middleware('auth', 'verified');
-Route::get('/why-us', [HomeController::class, 'why'])->name('why.index')->middleware('auth', 'verified');
 Route::get('mycart', [HomeController::class, 'mycart'])->middleware(['auth', 'verified']);
-Route::get('testimonial', [HomeController::class, 'testimonial'])->name('testimonial.index')->middleware(['auth', 'verified']);
-Route::get('contact-us', [HomeController::class, 'contact_us'])->name('contact-us.index')->middleware(['auth', 'verified']);
 Route::post('contact-us', [HomeController::class, 'store_contact_message'])->name('contact-us.store')->middleware(['auth', 'verified']);
 
 Route::get('remove_cart/{id}', [HomeController::class, 'remove_cart'])->middleware(['auth', 'verified']);
