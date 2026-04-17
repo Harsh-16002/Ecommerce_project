@@ -1,104 +1,57 @@
-<html>
+@extends('admin.layout')
 
-<head>
-    <style>
-        .div_deg {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 60px;
-        }
+@section('admin_kicker', 'Catalog Growth')
+@section('admin_title', 'Add a new product')
+@section('admin_subtitle', 'Create inventory with better structure so it appears dynamically across the storefront and admin dashboard.')
 
-        .product {
-            color: white;
-        }
+@section('content')
+    <section class="admin-mini-grid">
+        <article class="admin-card"><div class="admin-kpi"><span>Categories</span><strong>{{ $stats['categories'] }}</strong></div></article>
+        <article class="admin-card"><div class="admin-kpi"><span>Low stock items</span><strong>{{ $stats['low_stock'] }}</strong></div></article>
+    </section>
 
-        label {
-            display: inline-block;
-            width: 200px;
-            font-size: 15p !important;
-            color: white !important;
-        }
-
-        input[type="text"] {
-            width: 350px;
-            height: 40px;
-        }
-
-        textarea {
-            width: 450px;
-            height: 80px;
-        }
-
-        .input_deg {
-            padding: 15px;
-        }
-    </style>
-    @include('admin.css')
-</head>
-
-<body>
-    @include('admin.header')
-
-    @include('admin.sidebar')
-
-    <div class="page-content">
-        <div class="page-header">
-            <div class="container-fluid">
-                <h1 class="product">Add Product</h1>
-                <div class="div_deg">
-
-                    <form action="{{url('upload_product')}}" method="post" enctype="multipart/form-data">
-                        @csrf
-                        <div class="input_deg">
-                            <label for="">Title</label>
-                            <input type="text" name="title">
-                        </div>
-                        <div class="input_deg">
-                            <label for="">Description</label>
-                            <textarea name="description" id="" required></textarea>
-                        </div>
-                        <div class="input_deg">
-                            <label for="">Price</label>
-                            <input type="number" name="price">
-                        </div>
-                        <div class="input_deg">
-                            <label for="">Quantity</label>
-                            <input type="number" name="quantity">
-                        </div>
-                        <div class="input_deg">
-                            <label for="">Category</label>
-                            <select name="category" required>
-
-                                <option>Select a option</option>
-                                @foreach($data as $data){
-                                <option value="{{$data->category_name}}">{{$data->category_name}}</option>
-                                @endforeach
-                                }
-                            </select>
-                        </div>
-                        <div class="input_deg">
-                            <label for="">Product image</label>
-                            <input type="file" name="image">
-                        </div>
-                        <div class="input_deg">
-                            <input class="btn btn-success" type="submit" value="Add product">
-                        </div>
-
-                    </form>
-                </div>
+    <section class="admin-card">
+        <div class="admin-card-head">
+            <div>
+                <h3 class="admin-card-title">Product details</h3>
+                <div class="admin-muted">Everything you add here is reflected in the dynamic home, shop, and admin views.</div>
             </div>
         </div>
-    </div>
-    <!-- JavaScript files-->
-    <script src="{{asset('admincss/vendor/jquery/jquery.min.js')}}"></script>
-    <script src="{{asset('admincss/vendor/popper.js/umd/popper.min.js')}}"> </script>
-    <script src="{{asset('admincss/vendor/bootstrap/js/bootstrap.min.js')}}"></script>
-    <script src="{{asset('admincss/vendor/jquery.cookie/jquery.cookie.js')}}"> </script>
-    <script src="{{asset('admincss/vendor/chart.js/Chart.min.js')}}"></script>
-    <script src="{{asset('admincss/vendor/jquery-validation/jquery.validate.min.js')}}"></script>
-    <script src="{{asset('admincss/js/charts-home.js')}}"></script>
-    <script src="{{asset('admincss/js/front.js')}}"></script>
-</body>
 
-</html>
+        <form action="{{ url('upload_product') }}" method="POST" enctype="multipart/form-data" class="admin-form-grid">
+            @csrf
+            <div class="admin-field">
+                <label>Title</label>
+                <input type="text" name="title" placeholder="Product title" required>
+            </div>
+            <div class="admin-field">
+                <label>Category</label>
+                <select name="category" required>
+                    <option value="">Select category</option>
+                    @foreach($data as $item)
+                        <option value="{{ $item->category_name }}">{{ $item->category_name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="admin-field">
+                <label>Price</label>
+                <input type="number" step="0.01" name="price" placeholder="0.00" required>
+            </div>
+            <div class="admin-field">
+                <label>Quantity</label>
+                <input type="number" name="quantity" placeholder="0" required>
+            </div>
+            <div class="admin-field full">
+                <label>Description</label>
+                <textarea name="description" placeholder="Describe the product" required></textarea>
+            </div>
+            <div class="admin-field full">
+                <label>Product image</label>
+                <input type="file" name="image" required>
+            </div>
+            <div class="admin-field full">
+                <button type="submit" class="admin-btn">Add Product</button>
+            </div>
+        </form>
+    </section>
+@endsection

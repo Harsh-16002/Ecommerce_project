@@ -1,91 +1,55 @@
-<!DOCTYPE html>
-<html>
+@extends('admin.layout')
 
-<head>
-    <style>
-        .div_deg {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+@section('admin_kicker', 'Catalog Editing')
+@section('admin_title', 'Update product')
+@section('admin_subtitle', 'Refresh pricing, category, stock, and imagery without leaving the admin workspace.')
 
-        label {
-            display: inline-block;
-            width: 200px;
-            padding: 20px;
-        }
-
-        input[type='text'] {
-            width: 300px;
-            height: 60px;
-        }
-
-        textarea {
-            width: 450px;
-            height: 100px;
-        }
-    </style>
-    @include('admin.css')
-</head>
-
-<body>
-    @include('admin.header')
-
-    @include('admin.sidebar')
-
-    <div class="page-content">
-        <div class="page-header">
-            <div class="container-fluid">
-
-                <h2>Update Product</h2>
-                <div class="div_deg">
-                    <form action="{{url('edit_product',$data->id)}}" method="post" enctype="multipart/form-data">
-                        @csrf
-                        <div>
-                            <label for="">Title</label>
-                            <input type="text" name="title" value="{{$data->title}}">
-                        </div>
-                        <div>
-                            <label for="">Description</label>
-                            <textarea name="description" id="">{{$data->description}}</textarea>
-                        </div>
-                        <div>
-                            <label for="">Price</label>
-                            <input type="text" name="price" value="{{$data->price}}">
-                        </div>
-                        <div>
-                            <label for="">Quantity</label>
-                            <input type="number" name="quantity" value="{{$data->quantity}}">
-                        </div>
-                        <div>
-                            <label for="">Category</label>
-                            <select name="category" id="">
-                                <option value="{{$data->category}}">{{$data->category}}</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="">Current image</label>
-                            <img width="150px" src="/products/{{$data->image}}" alt="">
-                        </div>
-                        <div>
-                            <label for="">New image</label>
-                            <input type="file" name="image">
-                        </div>
-                        <input type="submit" class="btn btn-success" value="Update product">
-                    </form>
-                </div>
+@section('content')
+    <section class="admin-card">
+        <div class="admin-card-head">
+            <div>
+                <h3 class="admin-card-title">{{ $data->title }}</h3>
+                <div class="admin-muted">Current stock {{ $data->quantity }} | Category {{ $data->category }}</div>
             </div>
         </div>
-    </div>
-    <!-- JavaScript files-->
-    <script src="{{asset('admincss/vendor/jquery/jquery.min.js')}}"></script>
-    <script src="{{asset('admincss/vendor/popper.js/umd/popper.min.js')}}"> </script>
-    <script src="{{asset('admincss/vendor/bootstrap/js/bootstrap.min.js')}}"></script>
-    <script src="{{asset('admincss/vendor/jquery.cookie/jquery.cookie.js')}}"> </script>
-    <script src="{{asset('admincss/vendor/chart.js/Chart.min.js')}}"></script>
-    <script src="{{asset('admincss/vendor/jquery-validation/jquery.validate.min.js')}}"></script>
-    <script src="{{asset('admincss/js/charts-home.js')}}"></script>
-    <script src="{{asset('admincss/js/front.js')}}"></script>
-</body>
 
-</html>
+        <form action="{{ url('edit_product', $data->id) }}" method="POST" enctype="multipart/form-data" class="admin-form-grid">
+            @csrf
+            <div class="admin-field">
+                <label>Title</label>
+                <input type="text" name="title" value="{{ $data->title }}" required>
+            </div>
+            <div class="admin-field">
+                <label>Category</label>
+                <select name="category" required>
+                    @foreach($category as $item)
+                        <option value="{{ $item->category_name }}" @selected($item->category_name === $data->category)>{{ $item->category_name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="admin-field">
+                <label>Price</label>
+                <input type="number" step="0.01" name="price" value="{{ $data->price }}" required>
+            </div>
+            <div class="admin-field">
+                <label>Quantity</label>
+                <input type="number" name="quantity" value="{{ $data->quantity }}" required>
+            </div>
+            <div class="admin-field full">
+                <label>Description</label>
+                <textarea name="description" required>{{ $data->description }}</textarea>
+            </div>
+            <div class="admin-field">
+                <label>Current image</label>
+                <img src="{{ asset('products/'.$data->image) }}" alt="{{ $data->title }}" style="width: 180px; height: 180px; object-fit: cover; border-radius: 16px;">
+            </div>
+            <div class="admin-field">
+                <label>Replace image</label>
+                <input type="file" name="image">
+            </div>
+            <div class="admin-field full">
+                <button type="submit" class="admin-btn">Update Product</button>
+            </div>
+        </form>
+    </section>
+@endsection

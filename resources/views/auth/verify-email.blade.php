@@ -1,31 +1,59 @@
-<x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
-        {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
-    </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification</title>
+    @include('auth.partials.theme')
+</head>
+<body class="auth-page">
+    <div class="auth-shell">
+        <section class="auth-hero">
+            <a href="{{ url('/') }}" class="auth-brand">
+                <img src="{{ asset('images/marketverse-mark.svg') }}" alt="MarketVerse logo" class="auth-brand-mark">
+                <span>MarketVerse</span>
+            </a>
 
-    @if (session('status') == 'verification-link-sent')
-        <div class="mb-4 font-medium text-sm text-green-600">
-            {{ __('A new verification link has been sent to the email address you provided during registration.') }}
-        </div>
-    @endif
-
-    <div class="mt-4 flex items-center justify-between">
-        <form method="POST" action="{{ route('verification.send') }}">
-            @csrf
-
-            <div>
-                <x-primary-button>
-                    {{ __('Resend Verification Email') }}
-                </x-primary-button>
+            <div class="auth-hero-body">
+                <div class="auth-kicker">Verification</div>
+                <h1 class="auth-hero-title">Verify your email to unlock the full MarketVerse account experience.</h1>
+                <p class="auth-hero-copy">
+                    Once your email is verified, your account will be ready for secure sign-in, order tracking, and a smoother checkout flow.
+                </p>
             </div>
-        </form>
 
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
+            <div class="auth-hero-footer">
+                <a href="{{ url('/') }}" class="auth-home-link">Back to storefront</a>
+            </div>
+        </section>
 
-            <button type="submit" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                {{ __('Log Out') }}
-            </button>
-        </form>
+        <section class="auth-panel">
+            <div class="auth-card">
+                <div class="auth-card-header">
+                    <div class="auth-card-kicker">Email Verification</div>
+                    <h2 class="auth-card-title">Check your inbox</h2>
+                    <p class="auth-card-copy">
+                        We sent a verification link to your email address. Open it and confirm your account to continue.
+                    </p>
+                </div>
+
+                @if (session('status') === 'verification-link-sent')
+                    <div class="auth-status">A fresh verification link has been sent to your email address.</div>
+                @endif
+
+                <div class="auth-form">
+                    <form method="POST" action="{{ route('verification.send') }}" class="auth-form">
+                        @csrf
+                        <button type="submit" class="auth-submit">Resend Verification Email</button>
+                    </form>
+
+                    <form method="POST" action="{{ route('logout') }}" class="auth-form">
+                        @csrf
+                        <button type="submit" class="auth-secondary">Log Out</button>
+                    </form>
+                </div>
+            </div>
+        </section>
     </div>
-</x-guest-layout>
+</body>
+</html>

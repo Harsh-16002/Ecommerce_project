@@ -1,100 +1,21 @@
-<!DOCTYPE html>
-<html>
+@extends('Home.layout')
 
-<head>
-  <style>
-    .div_center {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 60px;
-    }
+@section('title', 'Checkout Complete | MarketVerse')
 
-    table {
-      border: 2px solid black;
-      text-align: center;
-      width: 800px;
-    }
-
-    th {
-      border: 2px solid skyblue;
-      background-color: black;
-      color: white;
-      font-size: 19px;
-      font-weight: bold;
-      text-align: center;
-    }
-
-    td {
-      border: 1px solid skyblue;
-      padding: 10px;
-    }
-  </style>
-  @include('home.css')
-
-</head>
-
-<body>
-  <div class="hero_area">
-    @include('Home.header')
-    <!-- slider section -->
-
-
-    <!-- end slider section -->
-  </div>
-  <!-- end hero area -->
-
-  <!-- shop section -->
-
-  <div class="div_center">
-    <table>
-      <tr>
-        <th>Product Name</th>
-        <th>Price</th>
-        <th>Delivery status</th>
-        <th>Image</th>
-      </tr>
-      @foreach($order as $order)
-      <tr>
-        <td>{{$order->product->title}}</td>
-        <td>{{$order->product->price}}</td>
-        <td>{{$order->status}}</td>
-        <td><img width="150" src="products/{{$order->product->image}}" alt=""></td>
-      </tr>
-      @endforeach
-    </table>
-    <?php
-    $totalValue = 0;
-    foreach ($cart as $cart_item) {
-      $totalValue += $cart_item->product->price;
-    }
-    ?>
-
-    <a href="{{url('checkout',$totalValue)}}" class="btn btn-success">Pay using Card</a>
-  </div>
-
-
-
-
-
-  <!-- contact section -->
-
-
-
-
-
-  <!-- info section -->
-
-  @include('Home.info')
-  <!-- end info section -->
-
-
-  <script src="{{asset('js/jquery-3.4.1.min.js')}}"></script>
-  <script src="{{('js/bootstrap.js')}}"></script>
-  <script src="{{('https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js')}}">
-  </script>
-  <script src="{{('js/custom.js')}}"></script>
-
-</body>
-
-</html>
+@section('content')
+    <section class="section">
+        <div class="page-container">
+            <div class="empty-state reveal">
+                <div class="eyebrow" style="justify-content: center;">Checkout Completed</div>
+                <h1 class="section-title">Your order summary now lives in My Orders</h1>
+                <p class="section-copy" style="margin-left: auto; margin-right: auto;">
+                    This handoff screen now matches the rest of the storefront, while the active post-checkout experience stays centered in the real order history flow.
+                </p>
+                <div class="hero-actions" style="justify-content: center; margin-top: 24px;">
+                    <a href="{{ url('myorders') }}" class="solid-btn">View My Orders</a>
+                    <a href="{{ route('shop.index') }}" class="outline-btn">Continue Shopping</a>
+                </div>
+            </div>
+        </div>
+    </section>
+@endsection

@@ -1,126 +1,95 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('Home.layout')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Details</title>
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-        }
+@section('title', $data->title . ' | MarketVerse')
 
-        .hero_area {
-            margin-bottom: 30px;
-        }
-
-        h2 {
-            text-align: center;
-            font-weight: bold;
-            margin-bottom: 20px;
-            color: #2c3e50;
-        }
-
-        .shop_section {
-            display: flex;
-            justify-content: center;
-            padding: 40px 0;
-        }
-
-        /* .container {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            max-width: 800px;
-            margin: auto;
-        } */
-
-        .box {
-            text-align: center;
-        }
-
-        .box img {
-            width: 100%;
-            max-width: 400px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .box img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .detail-box {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-            margin-bottom: 10px;
-        }
-
-        .detail-box h6 {
-            font-size: 18px;
-            margin-bottom: 10px;
-            color: #34495e;
-        }
-
-        .detail-box span {
-            color: #e74c3c;
-            font-weight: bold;
-        }
-
-        .detail-box p {
-            font-size: 16px;
-            color: #555;
-            line-height: 1.5;
-        }
-
-        .detail-box:last-child {
-            border-bottom: none;
-        }
-    </style>
-    @include('home.css')
-</head>
-
-<body>
-    <div class="hero_area">
-        @include('Home.header')
-    </div>
-
-    <h2>Product Details</h2>
-
-    <!-- Product details start -->
-    <section class="shop_section layout_padding">
-        <div class="container">
-            <div class="box">
-                <img src="/products/{{$data->image}}" alt="{{ $data->title }}">
-                <div class="detail-box">
-                    <h6>{{ $data->title }}</h6>
-                    <h6>Price: <span>{{ $data->price }}</span></h6>
+@section('content')
+    <section class="section">
+        <div class="page-container">
+            <div class="detail-layout">
+                <div class="detail-image reveal">
+                    <img src="{{ asset('products/' . $data->image) }}" alt="{{ $data->title }}">
                 </div>
-                <div class="detail-box">
-                    <h6>Category: {{ $data->category }}</h6>
-                    <h6>Available Quantity: <span>{{ $data->quantity }}</span></h6>
-                </div>
-                <div class="detail-box">
-                    <p>Description: {{ $data->description }}</p>
-                </div>
+
+                <article class="panel reveal delay-1">
+                    <div class="eyebrow">{{ $data->category ?? 'Collection' }}</div>
+                    <h1 class="section-title">{{ $data->title }}</h1>
+                    <p class="section-copy">{{ $data->description }}</p>
+
+                    <div class="grid-2" style="margin-top: 28px;">
+                        <div class="summary-box">
+                            <div class="muted">Selling Price</div>
+                            <div class="price-main" style="margin-top: 10px;">Rs. {{ number_format((float) $data->price, 2) }}</div>
+                        </div>
+                        <div class="summary-box">
+                            <div class="muted">Stock Status</div>
+                            <div class="price-main" style="margin-top: 10px;">{{ max((int) $data->quantity, 0) }}</div>
+                        </div>
+                    </div>
+
+                    <div class="stack-md" style="margin-top: 28px;">
+                        <div class="mini-card">
+                            <strong style="font-size: 20px;">Tailored buying flow</strong>
+                            <p class="muted">Add this product to cart, update quantity, and continue directly into payment selection.</p>
+                        </div>
+                        <div class="mini-card">
+                            <strong style="font-size: 20px;">Status-aware orders</strong>
+                            <p class="muted">Completed orders remain connected to payment state and delivery tracking in your account.</p>
+                        </div>
+                    </div>
+
+                    <div class="product-actions" style="margin-top: 28px;">
+                        <a href="{{ url('add_cart', $data->id) }}" class="solid-btn">Add to Cart</a>
+                        <a href="{{ url('mycart') }}" class="outline-btn">Go to Cart</a>
+                    </div>
+                </article>
             </div>
         </div>
     </section>
-    <!-- Product details ends -->
 
-    <!-- Keeping the same style for Home.info -->
-    @include('Home.info')
+    @if($similarProducts->count())
+        <section class="section-tight">
+            <div class="page-container">
+                <div class="section-header reveal">
+                    <div>
+                        <div class="eyebrow">Similar Picks</div>
+                        <h2 class="section-title">More from this category</h2>
+                    </div>
+                </div>
 
-    <script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-    <script src="{{ asset('js/custom.js') }}"></script>
-</body>
-
-</html>
+                <div class="grid-4">
+                    @foreach($similarProducts as $index => $product)
+                        <article class="product-card reveal delay-{{ $index % 4 }}">
+                            <div class="product-media">
+                                <div class="product-badge">{{ $product->category ?? 'Featured' }}</div>
+                                <div class="product-stock">{{ (int) $product->quantity > 0 ? $product->quantity . ' left' : 'Sold out' }}</div>
+                                <div class="product-quick-actions">
+                                    <a href="{{ url('product_details', $product->id) }}" class="product-quick-btn" aria-label="View {{ $product->title }}">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                    <a href="{{ url('add_cart', $product->id) }}" class="product-quick-btn" aria-label="Add {{ $product->title }} to cart">
+                                        <i class="fa fa-shopping-cart"></i>
+                                    </a>
+                                </div>
+                                <img src="{{ asset('products/' . $product->image) }}" alt="{{ $product->title }}">
+                            </div>
+                            <div class="product-body">
+                                <div class="product-topline">
+                                    <span class="category">{{ $product->category }}</span>
+                                </div>
+                                <div class="product-title">{{ $product->title }}</div>
+                                <p class="product-description">{{ \Illuminate\Support\Str::limit($product->description, 78) }}</p>
+                                <div class="price-row" style="margin-top: 16px;">
+                                    <span class="price-main">Rs. {{ number_format((float) $product->price, 2) }}</span>
+                                </div>
+                                <div class="product-buttons">
+                                    <a href="{{ url('product_details', $product->id) }}" class="product-btn view">View</a>
+                                    <a href="{{ url('add_cart', $product->id) }}" class="product-btn cart">Add</a>
+                                </div>
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
+@endsection

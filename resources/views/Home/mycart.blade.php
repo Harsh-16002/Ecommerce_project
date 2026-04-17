@@ -1,164 +1,80 @@
-<!DOCTYPE html>
-<html>
+@extends('Home.layout')
 
-<head>
-    <style>
-        .div_deg {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 60px;
-            flex-direction: column;
-        }
+@section('title', 'Your Cart | MarketVerse')
 
-        table {
-            border: 2px solid black;
-            text-align: center;
-            width: 800px;
-        }
+@section('content')
+    <section class="section">
+        <div class="page-container">
+            <div class="section-header reveal">
+                <div>
+                    <div class="eyebrow">Shopping Bag</div>
+                    <h1 class="section-title">Review your selected pieces</h1>
+                    <p class="section-copy">Update quantities, remove items, and continue to payment with delivery details captured in the same flow.</p>
+                </div>
+            </div>
 
-        th {
-            border: 2px solid black;
-            text-align: center;
-            color: white;
-            font: 20px;
-            font-weight: bold;
-            background-color: black;
-        }
+            @if($cart->isEmpty())
+                <div class="empty-state reveal">
+                    <h2 class="section-title" style="font-size: 34px;">Your bag is empty</h2>
+                    <p class="section-copy" style="margin-left: auto; margin-right: auto;">The catalog is ready whenever you want to start building a new order.</p>
+                    <a href="{{ route('shop.index') }}" class="solid-btn" style="margin-top: 20px;">Shop Now</a>
+                </div>
+            @else
+                <div class="cart-layout">
+                    <div class="stack-lg">
+                        @foreach($cart as $item)
+                            <article class="cart-item reveal">
+                                <img src="{{ asset('products/' . $item->product->image) }}" alt="{{ $item->product->title }}">
+                                <div>
+                                    <div class="pill">{{ $item->product->category ?? 'Collection' }}</div>
+                                    <h3 style="font-family: var(--serif); font-size: 28px; margin-top: 16px;">{{ $item->product->title }}</h3>
+                                    <p class="section-copy" style="margin-top: 8px;">Unit price: Rs. {{ number_format((float) $item->product->price, 2) }}</p>
 
-        td {
-            border: 1px solid skyblue;
-        }
+                                    <form action="{{ route('cart.update', $item->id) }}" method="POST" class="qty-form">
+                                        @csrf
+                                        <input type="number" name="quantity" min="1" value="{{ $item->quantity }}">
+                                        <button type="submit" class="text-btn">Update Qty</button>
+                                        <a href="{{ url('remove_cart', $item->id) }}" class="outline-btn">Remove</a>
+                                    </form>
+                                </div>
+                                <div>
+                                    <div class="muted">Line Total</div>
+                                    <div class="price-main" style="margin-top: 12px;">Rs. {{ number_format((float) $item->product->price * $item->quantity, 2) }}</div>
+                                </div>
+                            </article>
+                        @endforeach
+                    </div>
 
-        .cart_value {
-            text-align: center;
-            margin: 20px;
-            padding: 10px;
-        }
+                    <aside class="panel reveal delay-1">
+                        <div class="eyebrow">Checkout Details</div>
+                        <h2 class="section-title" style="font-size: 34px;">Order summary</h2>
 
-        .address_form {
-            margin-top: 40px;
-            width: 800px;
-            text-align: left;
-            border: 2px solid black;
-            padding: 20px;
-            background-color: #f9f9f9;
-        }
+                        <div class="stack-md" style="margin-top: 22px;">
+                            <div class="summary-row"><span class="muted">Items</span><strong>{{ $count }}</strong></div>
+                            <div class="summary-row"><span class="muted">Subtotal</span><strong>Rs. {{ number_format($subtotal, 2) }}</strong></div>
+                            <div class="summary-row"><span class="muted">Shipping</span><strong>Free</strong></div>
+                            <div class="summary-row" style="padding-top: 12px; border-top: 1px solid var(--border);"><span>Total</span><strong class="price-main" style="font-size: 30px;">Rs. {{ number_format($subtotal, 2) }}</strong></div>
+                        </div>
 
-        .address_form label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .address_form input,
-        .address_form textarea {
-            width: calc(100% - 20px);
-            padding: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .address_form textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        .address_form button {
-            padding: 10px 20px;
-            background-color: black;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            border-radius: 5px;
-        }
-
-        .address_form button:hover {
-            background-color: #333;
-        }
-    </style>
-    @include('home.css')
-
-</head>
-
-<body>
-    <div class="hero_area">
-        @include('Home.header')
-        <!-- slider section -->
-
-        <!-- end slider section -->
-    </div>
-
-    <div class="div_deg">
-        <table>
-            <tr>
-                <th>Product title</th>
-                <th>Price</th>
-                <th>Image</th>
-                <th>Remove</th>
-            </tr>
-            <?php $value = 0; ?>
-            @foreach($cart as $cart)
-            <tr>
-                <td>{{$cart->product->title}}</td>
-                <td>{{$cart->product->price}}</td>
-                <td>
-                    <img width="150px" src="/products/{{$cart->product->image }}" alt="image">
-                </td>
-                <td><a href="{{url('remove_cart',$cart->id)}}" class="btn btn-danger">Remove</a></td>
-            </tr>
-            <?php $value = $value + $cart->product->price; ?>
-            @endforeach
-        </table>
-    </div>
-
-    <div class="cart_value">
-        <h3>Total price: {{$value}}</h3>
-    </div>
-
-    <div class="div_deg">
-        <form action="{{url('order_data')}}" method="POST" class="address_form">
-            @csrf
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" value="{{Auth::user()->name}}" required>
-
-            <label for="address">Address Line:</label>
-            <textarea name="address" id="address">{{Auth::user()->address}}</textarea>
-
-            <label for="landmark">Landmark:</label>
-            <input type="text" id="landmark" name="landmark">
-
-            <label for="phone">Phone:</label>
-            <input type="text" id="phone" name="phone" value="{{Auth::user()->phone}}">
-
-            <label for="city">City:</label>
-            <input type="text" id="city" name="city" required>
-
-            <label for="state">State:</label>
-            <input type="text" id="state" name="state" required>
-
-            <label for="pin">Pin Code:</label>
-            <input type="text" id="pin" name="pin" required>
-
-            <label for="country">Country:</label>
-            <input type="text" id="country" name="country" required>
-
-            <button type="submit">Save and Continue</button>
-          
-        </form>
-    </div>
-
-    <!-- info section -->
-    @include('Home.info')
-    <!-- end info section -->
-
-    <script src="{{asset('js/jquery-3.4.1.min.js')}}"></script>
-    <script src="{{('js/bootstrap.js')}}"></script>
-    <script src="{{('https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js')}}"></script>
-    <script src="{{('js/custom.js')}}"></script>
-
-</body>
-
-</html>
+                        <form action="{{ url('payment_page') }}" method="POST" class="stack-md" style="margin-top: 28px;">
+                            @csrf
+                            <input class="input-field" type="text" name="name" value="{{ Auth::user()->name }}" placeholder="Full Name" required>
+                            <textarea class="textarea-field" name="address" rows="4" placeholder="Address" required>{{ Auth::user()->address }}</textarea>
+                            <input class="input-field" type="text" name="landmark" placeholder="Landmark (optional)">
+                            <div class="grid-2">
+                                <input class="input-field" type="text" name="phone" value="{{ Auth::user()->phone }}" placeholder="Phone" required>
+                                <input class="input-field" type="text" name="pin" placeholder="PIN Code" required>
+                            </div>
+                            <div class="grid-2">
+                                <input class="input-field" type="text" name="city" placeholder="City" required>
+                                <input class="input-field" type="text" name="state" placeholder="State" required>
+                            </div>
+                            <input class="input-field" type="text" name="country" value="India" placeholder="Country" required>
+                            <button type="submit" class="solid-btn" style="width: 100%;">Continue to Payment</button>
+                        </form>
+                    </aside>
+                </div>
+            @endif
+        </div>
+    </section>
+@endsection

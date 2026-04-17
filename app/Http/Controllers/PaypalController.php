@@ -1,66 +1,65 @@
 <?php
 
 namespace App\Http\Controllers;
-use Srmklive\PayPal\Services\PayPal as PayPalClient;
-use Illuminate\Http\Request;
-use App\Models\Cart;
-use Illuminate\Support\Facades\Auth;
 
+use App\Models\Cart;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
+use Srmklive\PayPal\Services\PayPal as PayPalClient;
 
 class PaypalController extends Controller
 {
-    // Declare the total amount as a class property
-    private $total = 1000; // Amount in USD
-
-    public function payment()
+    public function payment(): RedirectResponse
     {
-
-        if (Auth::check()) {
-            $user = Auth::user();
-            $userid = $user->id;
-            $cart = Cart::where('user_id', $userid)->get();
-        } else {
-            $cart = collect(); // return an empty collection if the user is not authenticated
+        if (! session()->has('checkout_data')) {
+            toastr()->timeOut(5000)->closeButton()->addError('Please enter your delivery details before selecting a payment method.');
+            return redirect('mycart');
         }
-        $totalValue = 0;
-    foreach ($cart as $cart_item) {
-      $totalValue += $cart_item->product->price;
-    }
 
-        
+        $cart = Cart::with('product')->where('user_id', Auth::id())->get();
+
+        if ($cart->isEmpty()) {
+            toastr()->timeOut(5000)->closeButton()->addError('Your cart is empty.');
+            return redirect('mycart');
+        }
+
+        $totalValue = number_format((float) $cart->sum(function (Cart $item) {
+            return ((float) $item->product->price) * (int) $item->quantity;
+        }), 2, '.', '');
+
         $provider = new PayPalClient();
-
-        // Set up PayPal Client credentials (make sure these are configured correctly)
         $provider->setApiCredentials(config('paypal'));
-
-        // Get access token
         $token = $provider->getAccessToken();
         $provider->setAccessToken($token);
 
-        // Create an order
         $order = $provider->createOrder([
-            "intent" => "CAPTURE",
-            "purchase_units" => [
+            'intent' => 'CAPTURE',
+            'purchase_units' => [
                 [
-                    "amount" => [
-                        "currency_code" => 'EUR',
-                        "value" => $totalValue // Accessing the class property
-                    ]
-                ]
+                    'amount' => [
+                        'currency_code' => config('paypal.currency', 'USD'),
+                        'value' => $totalValue,
+                    ],
+                ],
             ],
             'application_context' => [
                 'cancel_url' => route('payment.cancel'),
-                'return_url' => route('payment.success')
-            ]
+                'return_url' => route('payment.success'),
+            ],
         ]);
 
-        // Check if the order was created successfully
-        if (isset($order['id'])) {
-            // Redirect user to PayPal for payment
-            return redirect($order['links'][1]['href']);
-        } else {
-            // Handle errors (e.g., log them or display an error message)
-            return redirect()->back()->with('error', 'There was an issue with the PayPal transaction. Please try again.');
+        if (isset($order['id'], $order['links'])) {
+            session(['paypal_order_id' => $order['id']]);
+
+            foreach ($order['links'] as $link) {
+                if (($link['rel'] ?? null) === 'approve') {
+                    return redirect($link['href']);
+                }
+            }
         }
+
+        toastr()->timeOut(5000)->closeButton()->addError('There was an issue starting the PayPal transaction. Please try again.');
+
+        return redirect()->back();
     }
 }

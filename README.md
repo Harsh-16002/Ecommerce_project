@@ -7,6 +7,62 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Deploying To Render
+
+This repo now includes a Docker-based Render setup:
+
+- `render.yaml`
+- `Dockerfile`
+- `scripts/start.sh`
+- `conf/nginx/default.conf.template`
+- `conf/supervisor/supervisord.conf`
+
+### What To Create In Render
+
+1. Push this repository to GitHub, GitLab, or Bitbucket.
+2. In Render, create a PostgreSQL database.
+3. In Render, create a new Blueprint or Web Service from this repository.
+4. If you use the included `render.yaml`, set these secret environment variables in the Render dashboard before the first successful deploy:
+
+- `APP_URL`
+- `APP_KEY`
+- `DB_URL`
+- `ADMIN_NAME`
+- `ADMIN_EMAIL`
+- `ADMIN_PASSWORD`
+- `ADMIN_PHONE`
+- `ADMIN_ADDRESS`
+- `PAYPAL_MODE`
+- `PAYPAL_SANDBOX_CLIENT_ID`
+- `PAYPAL_SANDBOX_CLIENT_SECRET`
+- `PAYPAL_LIVE_CLIENT_ID`
+- `PAYPAL_LIVE_CLIENT_SECRET`
+- `PAYPAL_LIVE_APP_ID`
+- `PAYPAL_NOTIFY_URL`
+- Any mail or AWS variables your production flow depends on
+
+### Required Values
+
+- `APP_KEY`: run `php artisan key:generate --show` locally and paste the output into Render
+- `DB_URL`: use your Render PostgreSQL internal connection string
+- `APP_URL`: set this to your Render service URL, such as `https://your-app-name.onrender.com`
+- `ADMIN_EMAIL` and `ADMIN_PASSWORD`: used by `AdminSeeder` to create or promote your first admin account
+
+### Seeded Data
+
+- `AdminSeeder` creates or updates the admin account with `usertype = admin`
+- The admin account is marked verified by setting `email_verified_at`
+- `CategorySeeder` loads the storefront categories
+- `ProductSeeder` loads the storefront products
+- Startup runs `php artisan db:seed --force`, and all included seeders use idempotent writes so repeat deploys stay safe
+
+### Notes
+
+- The app starts with Nginx + PHP-FPM inside Docker.
+- On startup, the container runs `php artisan migrate --force`.
+- Because Render's filesystem is ephemeral, production should use PostgreSQL instead of SQLite.
+- Uploaded files stored only on the local filesystem will not persist across redeploys. If you need persistent user uploads later, move them to S3-compatible storage or attach a Render disk and update the storage strategy.
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:

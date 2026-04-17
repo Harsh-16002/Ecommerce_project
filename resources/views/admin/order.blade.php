@@ -1,148 +1,89 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    @include('admin.css')
-    <style>
-        .table-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        table {
-            width: 100%;
-            max-width: 1200px;
-            border-collapse: collapse;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            background-color: #1a1a1a;
-            color: #f5f5f5;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        th, td {
-            padding: 12px;
-            text-align: center;
-        }
-        th {
-            background-color: #4caf50;
-            color: white;
-            font-size: 16px;
-        }
-        td {
-            border-bottom: 1px solid #ddd;
-        }
-        tr:hover {
-            background-color: #2e2e2e;
-            transition: background-color 0.3s ease;
-        }
-        img {
-            width: 100px;
-            border-radius: 8px;
-        }
-        .btn {
-            padding: 8px 12px;
-            border-radius: 5px;
-            font-size: 14px;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-        }
-        .btn-primary {
-            background-color: #007bff;
-            color: white;
-        }
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
-        .btn-success {
-            background-color: #28a745;
-            color: white;
-        }
-        .btn-success:hover {
-            background-color: #218838;
-        }
-        .btn-secondary {
-            background-color: #6c757d;
-            color: white;
-        }
-        .btn-secondary:hover {
-            background-color: #5a6268;
-        }
-        .status-red {
-            color: red;
-        }
-        .status-yellow {
-            color: yellow;
-        }
-        .status-green {
-            color: green;
-        }
-    </style>
-</head>
-<body>
-    @include('admin.header')
-    @include('admin.sidebar')
+@extends('admin.layout')
 
-    <div class="page-content">
-        <div class="page-header">
-            <div class="container-fluid">
-                <h2 class="h5 no-margin-bottom">Order Management</h2>
+@section('admin_kicker', 'Orders')
+@section('admin_title', 'Order management')
+@section('admin_subtitle', 'Track customer delivery status, payment state, totals, and printable invoices in one place.')
+
+@section('content')
+    <section class="admin-stats-grid">
+        <article class="admin-card admin-stat-card"><div class="admin-muted">Orders</div><div class="admin-stat-value">{{ $stats['total'] }}</div></article>
+        <article class="admin-card admin-stat-card"><div class="admin-muted">Revenue</div><div class="admin-stat-value">Rs. {{ number_format((float) $stats['revenue'], 2) }}</div></article>
+        <article class="admin-card admin-stat-card"><div class="admin-muted">Pending</div><div class="admin-stat-value">{{ $stats['pending'] }}</div></article>
+        <article class="admin-card admin-stat-card"><div class="admin-muted">Delivered</div><div class="admin-stat-value">{{ $stats['delivered'] }}</div></article>
+    </section>
+
+    <section class="admin-card">
+        <div class="admin-card-head">
+            <div>
+                <h3 class="admin-card-title">Recent orders</h3>
+                <div class="admin-muted">Everything placed through checkout is available here with quick status actions.</div>
             </div>
         </div>
-        <div class="table-container">
-            <table>
+
+        <div class="admin-table-wrap">
+            <table class="admin-table">
                 <thead>
                     <tr>
-                        <th>Customer Name</th>
-                        <th>Address</th>
-                        <th>Phone No</th>
-                        <th>Product Title</th>
-                        <th>Price</th>
-                        <th>Image</th>
+                        <th>Customer</th>
+                        <th>Shipping</th>
+                        <th>Product</th>
+                        <th>Payment</th>
                         <th>Status</th>
-                        <th>Change Status</th>
-                        <th>Print PDF</th>
+                        <th>Actions</th>
+                        <th>Invoice</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($order as $data)
-                    <tr>
-                        <td>{{ $data->name }}</td>
-                        <td>{{ $data->address }}, {{ $data->city }}, {{ $data->state }}, {{ $data->country }}, {{ $data->pincode }}</td>
-                        <td>{{ $data->phone }}</td>
-                        <td>{{ $data->product->title }}</td>
-                        <td>${{ $data->product->price }}</td>
-                        <td><img src="products/{{ $data->product->image }}" alt="Product Image"></td>
-                        <td>
-                            @if($data->status == 'in progress')
-                            <span class="status-red">{{ $data->status }}</span>
-                            @elseif($data->status == 'On the way')
-                            <span class="status-yellow">{{ $data->status }}</span>
-                            @else
-                            <span class="status-green">{{ $data->status }}</span>
-                            @endif
-                        </td>
-                        <td>
-                            <a href="{{ url('on_the_way', $data->id) }}" class="btn btn-primary">On the Way</a>
-                            <a href="{{ url('delivered', $data->id) }}" class="btn btn-success">Delivered</a>
-                        </td>
-                        <td>
-                            <a href="{{ url('print_pdf', $data->id) }}" class="btn btn-secondary">Print PDF</a>
-                        </td>
-                    </tr>
+                        @php
+                            $statusClass = match($data->status) {
+                                'Delivered' => 'delivered',
+                                'On the way', 'Out for delivery' => 'onway',
+                                'Cancelled', 'Returned' => 'pending',
+                                'Confirmed', 'Packed' => 'processing',
+                                default => 'pending',
+                            };
+                        @endphp
+                        <tr>
+                            <td>
+                                <strong>{{ $data->name }}</strong>
+                                <div class="admin-muted">{{ $data->phone }}</div>
+                            </td>
+                            <td>{{ $data->address }}, {{ $data->city }}, {{ $data->state }}, {{ $data->country }}, {{ $data->pincode }}</td>
+                            <td>
+                                <div style="display:flex;align-items:center;gap:14px;">
+                                    @if($data->product?->image)
+                                        <img src="{{ asset('products/'.$data->product->image) }}" alt="{{ $data->product->title }}">
+                                    @endif
+                                    <div>
+                                        <strong>{{ $data->product?->title ?? 'Archived product' }}</strong>
+                                        <div class="admin-muted">Qty {{ $data->quantity }} | Rs. {{ number_format((float) ($data->total_price ?? $data->product?->price), 2) }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="admin-badge payment">{{ $data->payment_status }}</span></td>
+                            <td><span class="admin-badge {{ $statusClass }}">{{ $data->status }}</span></td>
+                            <td>
+                                <form method="POST" action="{{ route('admin.orders.status', $data->id) }}" style="display:grid;gap:8px;min-width:180px;">
+                                    @csrf
+                                    <select name="status">
+                                        @foreach($orderStatuses as $status)
+                                            <option value="{{ $status }}" @selected($data->status === $status)>{{ $status }}</option>
+                                        @endforeach
+                                    </select>
+                                    <button type="submit" class="admin-status-btn warning">Update</button>
+                                </form>
+                            </td>
+                            <td>
+                                <div style="display:grid;gap:8px;">
+                                    <a href="{{ route('admin.orders.show', $data->id) }}" class="admin-btn-outline">View Order</a>
+                                    <a href="{{ route('admin.orders.invoice', $data->id) }}" class="admin-btn-outline">Print PDF</a>
+                                </div>
+                            </td>
+                        </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
-    </div>
-    
-    <!-- JavaScript files-->
-    <script src="{{ asset('admincss/vendor/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('admincss/vendor/popper.js/umd/popper.min.js') }}"></script>
-    <script src="{{ asset('admincss/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('admincss/vendor/jquery.cookie/jquery.cookie.js') }}"></script>
-    <script src="{{ asset('admincss/vendor/chart.js/Chart.min.js') }}"></script>
-    <script src="{{ asset('admincss/vendor/jquery-validation/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('admincss/js/charts-home.js') }}"></script>
-    <script src="{{ asset('admincss/js/front.js') }}"></script>
-  </body>
-</html>
+    </section>
+@endsection

@@ -1,83 +1,67 @@
-<section class="info_section  layout_padding2-top">
-    <div class="social_container">
-      <div class="social_box">
-        <a href="">
-          <i class="fa fa-facebook" aria-hidden="true"></i>
-        </a>
-        <a href="">
-          <i class="fa fa-twitter" aria-hidden="true"></i>
-        </a>
-        <a href="">
-          <i class="fa fa-instagram" aria-hidden="true"></i>
-        </a>
-        <a href="">
-          <i class="fa fa-youtube" aria-hidden="true"></i>
-        </a>
-      </div>
-    </div>
-    <div class="info_container ">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6 col-lg-3">
-            <h6>
-              ABOUT US
-            </h6>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doLorem ipsum dolor sit amet, consectetur adipiscing elit, sed doLorem ipsum dolor sit amet,
+<section class="section section-tight">
+    <div class="page-container">
+        <div class="panel panel-dark newsletter-box reveal">
+            <div class="eyebrow" style="justify-content: center;">Stay in the Loop</div>
+            <h2 class="section-title" style="margin-top: 18px;">Join the MarketVerse Circle</h2>
+            <p class="section-copy" style="margin-left: auto; margin-right: auto;">
+                New arrivals, curated picks, and marketplace offers sent straight to your inbox.
             </p>
-          </div>
-          <div class="col-md-6 col-lg-3">
-            <div class="info_form ">
-              <h5>
-                Newsletter
-              </h5>
-              <form action="#">
-                <input type="email" placeholder="Enter your email">
-                <button>
-                  Subscribe
-                </button>
-              </form>
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-3">
-            <h6>
-              NEED HELP
-            </h6>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doLorem ipsum dolor sit amet, consectetur adipiscing elit, sed doLorem ipsum dolor sit amet,
-            </p>
-          </div>
-          <div class="col-md-6 col-lg-3">
-            <h6>
-              CONTACT US
-            </h6>
-            <div class="info_link-box">
-              <a href="">
-                <i class="fa fa-map-marker" aria-hidden="true"></i>
-                <span> Gb road 123 london Uk </span>
-              </a>
-              <a href="">
-                <i class="fa fa-phone" aria-hidden="true"></i>
-                <span>+01 12345678901</span>
-              </a>
-              <a href="">
-                <i class="fa fa-envelope" aria-hidden="true"></i>
-                <span> demo@gmail.com</span>
-              </a>
-            </div>
-          </div>
+            <form class="newsletter-form">
+                <input type="email" placeholder="your@email.com">
+                <button type="button">Subscribe</button>
+            </form>
         </div>
-      </div>
     </div>
-    <!-- footer section -->
-    <footer class=" footer_section">
-      <div class="container">
-        <p>
-          &copy; <span id="displayYear"></span> All Rights Reserved By
-          <a href="https://html.design/">Web Tech Knowledge</a>
-        </p>
-      </div>
-    </footer>
-    <!-- footer section -->
+</section>
 
-  </section>
+<footer class="site-footer">
+    <div class="page-container">
+        <div class="footer-grid">
+            <div>
+                <a href="{{ url('/') }}" class="brand-mark" style="color: var(--cream); text-decoration: none;">
+                    <img src="{{ asset('images/marketverse-mark.svg') }}" alt="MarketVerse logo" class="brand-logo-icon">
+                    <span class="brand-wordmark">Market<span>Verse</span></span>
+                </a>
+                <p class="section-copy" style="color: rgba(248,245,239,0.62); margin-top: 18px; max-width: 340px;">
+                    A modern multi-category marketplace built for discovery, convenience, and a smooth Laravel commerce flow.
+                </p>
+            </div>
+            <div>
+                <div class="footer-title">Shop</div>
+                <ul class="footer-links">
+                    <li><a href="{{ route('shop.index') }}">All Products</a></li>
+                    <li><a href="{{ route('shop.index', ['sort' => 'latest']) }}">New Arrivals</a></li>
+                    <li><a href="{{ route('shop.index', ['sort' => 'price_high']) }}">Premium Picks</a></li>
+                    <li><a href="{{ url('mycart') }}">Your Cart</a></li>
+                </ul>
+            </div>
+            <div>
+                <div class="footer-title">Support</div>
+                <ul class="footer-links">
+                    <li><a href="{{ route('contact-us.index') }}">Contact</a></li>
+                    <li><a href="{{ route('testimonial.index') }}">Reviews</a></li>
+                    <li><a href="{{ route('why.index') }}">Why Us</a></li>
+                    <li><a href="{{ url('myorders') }}">Track Orders</a></li>
+                </ul>
+            </div>
+            <div>
+                <div class="footer-title">Studio</div>
+                <ul class="footer-links">
+                    <li><a href="{{ route('login') }}">Customer Login</a></li>
+                    <li><a href="{{ route('register') }}">Create Account</a></li>
+                    @if(($storefrontAdminShortcuts ?? collect())->isNotEmpty())
+                        @foreach($storefrontAdminShortcuts as $shortcut)
+                            <li><a href="{{ $shortcut['url'] }}">{{ $shortcut['label'] }}</a></li>
+                        @endforeach
+                    @endif
+                    <li><a href="{{ url('/') }}">Home</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div>&copy; <span id="yearNow"></span> MarketVerse. Crafted for a full ecommerce flow.</div>
+            <div>Raipur, India | support@marketverse.local | +91 9131550312</div>
+        </div>
+    </div>
+</footer>

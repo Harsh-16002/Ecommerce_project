@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Payment extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'transaction_id',
         'amount',
@@ -15,6 +16,11 @@ class Payment extends Model
         'payment_date',
         'user_id', // Add user_id
         'product_id', // Add product_id
+    ];
+
+    protected $casts = [
+        'payment_date' => 'datetime',
+        'amount' => 'decimal:2',
     ];
 
     // Relationship with User
