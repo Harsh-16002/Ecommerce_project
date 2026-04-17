@@ -24,6 +24,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libfreetype6-dev \
     libpq-dev \
     libxml2-dev \
+    libonig-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install bcmath dom gd mbstring pdo_mysql pdo_pgsql zip \
     && rm -rf /var/lib/apt/lists/*
@@ -49,11 +50,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libpng-dev \
     libjpeg62-turbo-dev \
     libfreetype6-dev \
+    libxml2-dev \
+    libonig-dev \
     unzip \
     git \
     gettext-base \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo_pgsql pdo_mysql bcmath gd zip \
+    && docker-php-ext-install bcmath dom gd mbstring pdo_mysql pdo_pgsql zip \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /var/www/html
