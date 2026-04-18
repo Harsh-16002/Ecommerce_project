@@ -1,31 +1,33 @@
 <section class="admin-stats-grid">
-    <article class="admin-card admin-stat-card">
+    <article class="admin-card admin-stat-card admin-stat-card-featured">
         <span class="admin-icon"><i class="fa fa-money"></i></span>
-        <div class="admin-muted">Total Sales</div>
+        <div class="admin-stat-label">Total Sales</div>
         <div class="admin-stat-value">Rs. {{ number_format((float) $stats['revenue'], 2) }}</div>
         <div class="admin-stat-foot">{{ number_format($stats['delivered']) }} delivered orders completed</div>
     </article>
 
     <article class="admin-card admin-stat-card">
         <span class="admin-icon"><i class="fa fa-shopping-cart"></i></span>
-        <div class="admin-muted">Orders</div>
+        <div class="admin-stat-label">Orders</div>
         <div class="admin-stat-value">{{ number_format($stats['orders']) }}</div>
         <div class="admin-stat-foot">{{ number_format($stats['pending_orders']) }} still in progress</div>
     </article>
 
     <article class="admin-card admin-stat-card">
         <span class="admin-icon"><i class="fa fa-users"></i></span>
-        <div class="admin-muted">Visitors / Customers</div>
+        <div class="admin-stat-label">Visitors / Customers</div>
         <div class="admin-stat-value">{{ number_format($stats['customers']) }}</div>
         <div class="admin-stat-foot">Registered users currently in the system</div>
     </article>
 
     <article class="admin-card admin-stat-card">
         <span class="admin-icon"><i class="fa fa-line-chart"></i></span>
-        <div class="admin-muted">Conversion</div>
+        <div class="admin-stat-label">Conversion</div>
         <div class="admin-stat-value">{{ number_format((float) $stats['conversion_rate'], 1) }}%</div>
         <div class="admin-stat-foot">Average order value Rs. {{ number_format((float) $stats['average_order_value'], 2) }}</div>
     </article>
+</section>
+
 <div class="admin-dashboard-stack">
     <section class="admin-dashboard-grid">
         <article class="admin-card">

@@ -10,8 +10,10 @@
         </div>
 
         <div class="admin-search">
-            <form action="{{ route('admin.products.search') }}" method="GET">
+            <form action="{{ route('admin.products.search') }}" method="GET" class="admin-search-form">
+                <span class="admin-search-icon" aria-hidden="true"><i class="fa fa-search"></i></span>
                 <input type="search" name="search" placeholder="Search products, categories, or catalog text..." value="{{ $searchTerm ?? '' }}">
+                <button type="submit" class="admin-search-submit">Search</button>
             </form>
         </div>
 
