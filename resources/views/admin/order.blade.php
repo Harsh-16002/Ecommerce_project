@@ -45,12 +45,12 @@
                             };
                         @endphp
                         <tr>
-                            <td>
+                            <td data-label="Customer">
                                 <strong>{{ $data->name }}</strong>
                                 <div class="admin-muted">{{ $data->phone }}</div>
                             </td>
-                            <td>{{ $data->address }}, {{ $data->city }}, {{ $data->state }}, {{ $data->country }}, {{ $data->pincode }}</td>
-                            <td>
+                            <td data-label="Shipping">{{ $data->address }}, {{ $data->city }}, {{ $data->state }}, {{ $data->country }}, {{ $data->pincode }}</td>
+                            <td data-label="Product">
                                 <div class="admin-media-row">
                                     @if($data->product?->image)
                                         <img src="{{ asset('products/'.$data->product->image) }}" alt="{{ $data->product->title }}">
@@ -61,9 +61,9 @@
                                     </div>
                                 </div>
                             </td>
-                            <td><span class="admin-badge payment">{{ $data->payment_status }}</span></td>
-                            <td><span class="admin-badge {{ $statusClass }}">{{ $data->status }}</span></td>
-                            <td>
+                            <td data-label="Payment"><span class="admin-badge payment">{{ $data->payment_status }}</span></td>
+                            <td data-label="Status"><span class="admin-badge {{ $statusClass }}">{{ $data->status }}</span></td>
+                            <td data-label="Actions">
                                 <form method="POST" action="{{ route('admin.orders.status', $data->id) }}" class="admin-status-form">
                                     @csrf
                                     <select name="status">
@@ -74,7 +74,7 @@
                                     <button type="submit" class="admin-status-btn warning">Update</button>
                                 </form>
                             </td>
-                            <td>
+                            <td data-label="Invoice">
                                 <div class="admin-actions-stack">
                                     <a href="{{ route('admin.orders.show', $data->id) }}" class="admin-btn-outline">View Order</a>
                                     <a href="{{ route('admin.orders.invoice', $data->id) }}" class="admin-btn-outline">Print PDF</a>

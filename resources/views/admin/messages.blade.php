@@ -35,15 +35,15 @@
                 <tbody>
                     @forelse($messages as $message)
                         <tr>
-                            <td>
+                            <td data-label="Sender">
                                 <strong>{{ $message->name }}</strong>
                                 <div class="admin-muted">{{ $message->email }}{{ $message->phone ? ' | '.$message->phone : '' }}</div>
                             </td>
-                            <td>{{ $message->subject }}</td>
-                            <td>{{ \Illuminate\Support\Str::limit($message->message, 90) }}</td>
-                            <td><span class="admin-badge {{ $message->is_read ? 'delivered' : 'pending' }}">{{ $message->is_read ? 'Read' : 'Unread' }}</span></td>
-                            <td>{{ $message->created_at?->format('d M Y h:i A') }}</td>
-                            <td>
+                            <td data-label="Subject">{{ $message->subject }}</td>
+                            <td data-label="Message">{{ \Illuminate\Support\Str::limit($message->message, 90) }}</td>
+                            <td data-label="Status"><span class="admin-badge {{ $message->is_read ? 'delivered' : 'pending' }}">{{ $message->is_read ? 'Read' : 'Unread' }}</span></td>
+                            <td data-label="Received">{{ $message->created_at?->format('d M Y h:i A') }}</td>
+                            <td data-label="Action">
                                 <div class="admin-actions-stack">
                                     <a href="{{ route('admin.messages.show', $message->id) }}" class="admin-btn-outline">View</a>
                                     @if(! $message->is_read)
@@ -57,7 +57,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="admin-muted">No customer messages yet.</td>
+                            <td colspan="6" data-label="" class="admin-muted">No customer messages yet.</td>
                         </tr>
                     @endforelse
                 </tbody>

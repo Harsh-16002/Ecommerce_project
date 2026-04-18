@@ -57,24 +57,24 @@
                 <tbody>
                     @forelse($payments as $payment)
                         <tr>
-                            <td>
+                            <td data-label="Transaction">
                                 <strong>{{ $payment->transaction_id }}</strong>
                                 <div class="admin-muted">{{ $payment->currency ?: 'USD' }}</div>
                             </td>
-                            <td>
+                            <td data-label="Customer">
                                 <div>{{ $payment->user?->name ?? 'Guest / removed user' }}</div>
                                 <div class="admin-muted">{{ $payment->user?->email ?? 'No email available' }}</div>
                             </td>
-                            <td>
+                            <td data-label="Product">
                                 <div>{{ $payment->product?->title ?? 'Archived product' }}</div>
                                 <div class="admin-muted">{{ $payment->product?->category ?? 'Uncategorized' }}</div>
                             </td>
-                            <td>Rs. {{ number_format((float) $payment->amount, 2) }}</td>
-                            <td>{{ optional($payment->payment_date)->format('d M Y h:i A') ?? optional($payment->created_at)->format('d M Y h:i A') }}</td>
+                            <td data-label="Amount">Rs. {{ number_format((float) $payment->amount, 2) }}</td>
+                            <td data-label="Date">{{ optional($payment->payment_date)->format('d M Y h:i A') ?? optional($payment->created_at)->format('d M Y h:i A') }}</td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="admin-muted">No payment records available yet.</td>
+                            <td colspan="5" data-label="" class="admin-muted">No payment records available yet.</td>
                         </tr>
                     @endforelse
                 </tbody>

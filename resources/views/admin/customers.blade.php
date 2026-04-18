@@ -57,21 +57,21 @@
                 <tbody>
                     @forelse($customers as $customer)
                         <tr>
-                            <td>
+                            <td data-label="Customer">
                                 <strong>{{ $customer->name }}</strong>
                                 <div class="admin-muted">{{ $customer->email_verified_at ? 'Verified account' : 'Verification pending' }}</div>
                             </td>
-                            <td>
+                            <td data-label="Contact">
                                 <div>{{ $customer->email }}</div>
                                 <div class="admin-muted">{{ $customer->phone ?: 'No phone added' }}</div>
                             </td>
-                            <td>{{ number_format($customer->orders_count) }}</td>
-                            <td>Rs. {{ number_format((float) $customer->lifetime_value, 2) }}</td>
-                            <td>{{ $customer->created_at?->format('d M Y') }}</td>
+                            <td data-label="Orders">{{ number_format($customer->orders_count) }}</td>
+                            <td data-label="Lifetime Value">Rs. {{ number_format((float) $customer->lifetime_value, 2) }}</td>
+                            <td data-label="Joined">{{ $customer->created_at?->format('d M Y') }}</td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="admin-muted">No customers found yet.</td>
+                            <td colspan="5" data-label="" class="admin-muted">No customers found yet.</td>
                         </tr>
                     @endforelse
                 </tbody>

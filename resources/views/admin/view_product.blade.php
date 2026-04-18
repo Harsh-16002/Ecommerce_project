@@ -37,25 +37,25 @@
                 <tbody>
                     @foreach($data as $item)
                         <tr>
-                            <td>
-                                <div style="display:flex;align-items:center;gap:14px;">
+                            <td data-label="Product">
+                                <div class="admin-media-row">
                                     <img src="{{ asset('products/'.$item->image) }}" alt="{{ $item->title }}">
                                     <strong>{{ $item->title }}</strong>
                                 </div>
                             </td>
-                            <td>{{ \Illuminate\Support\Str::limit($item->description, 90) }}</td>
-                            <td>Rs. {{ number_format((float) $item->price, 2) }}</td>
-                            <td>{{ $item->category }}</td>
-                            <td>{{ $item->quantity }}</td>
-                            <td><a href="{{ route('admin.products.edit', $item->id) }}" class="admin-btn-outline">Edit</a></td>
-                            <td><a href="{{ route('admin.products.delete', $item->id) }}" class="admin-btn-outline" onclick="confirmDelete(event)">Delete</a></td>
+                            <td data-label="Description">{{ \Illuminate\Support\Str::limit($item->description, 90) }}</td>
+                            <td data-label="Price">Rs. {{ number_format((float) $item->price, 2) }}</td>
+                            <td data-label="Category">{{ $item->category }}</td>
+                            <td data-label="Qty">{{ $item->quantity }}</td>
+                            <td data-label="Edit"><a href="{{ route('admin.products.edit', $item->id) }}" class="admin-btn-outline">Edit</a></td>
+                            <td data-label="Delete"><a href="{{ route('admin.products.delete', $item->id) }}" class="admin-btn-outline" onclick="confirmDelete(event)">Delete</a></td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
 
-        <div style="margin-top: 18px;">
+        <div class="admin-pagination-wrap" style="margin-top: 18px;">
             {{ $data->links('pagination::bootstrap-4') }}
         </div>
     </section>

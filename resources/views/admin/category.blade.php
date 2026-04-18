@@ -62,10 +62,10 @@
                     <tbody>
                         @foreach($data as $item)
                             <tr>
-                                <td><strong>{{ $item->category_name }}</strong></td>
-                                <td>{{ $item->product_count }}</td>
-                                <td><a href="{{ route('admin.categories.edit', $item->id) }}" class="admin-btn-outline">Edit</a></td>
-                                <td><a href="{{ route('admin.categories.delete', $item->id) }}" class="admin-btn-outline" onclick="confirmDelete(event)">Delete</a></td>
+                                <td data-label="Category"><strong>{{ $item->category_name }}</strong></td>
+                                <td data-label="Products">{{ $item->product_count }}</td>
+                                <td data-label="Edit"><a href="{{ route('admin.categories.edit', $item->id) }}" class="admin-btn-outline">Edit</a></td>
+                                <td data-label="Delete"><a href="{{ route('admin.categories.delete', $item->id) }}" class="admin-btn-outline" onclick="confirmDelete(event)">Delete</a></td>
                             </tr>
                         @endforeach
                     </tbody>
