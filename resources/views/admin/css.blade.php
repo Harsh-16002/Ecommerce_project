@@ -1,6 +1,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <title>MarketVerse Admin</title>
 <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -512,6 +513,52 @@
         aspect-ratio: 1 / 1;
         object-fit: cover;
         border-radius: 16px;
+    }
+    .admin-ai-panel {
+        display: grid;
+        gap: 14px;
+        padding: 18px;
+        border-radius: 16px;
+        border: 1px solid rgba(99, 102, 241, 0.18);
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(255, 255, 255, 0.92));
+    }
+    .admin-ai-kicker {
+        color: var(--admin-primary);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+    }
+    .admin-ai-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+    .admin-ai-status {
+        color: var(--admin-muted);
+        font-size: 13px;
+        line-height: 1.6;
+    }
+    .admin-ai-status.error {
+        color: #b91c1c;
+    }
+    .admin-ai-suggestions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .admin-ai-pill {
+        display: inline-flex;
+        align-items: center;
+        min-height: 32px;
+        padding: 0 12px;
+        border-radius: 999px;
+        background: rgba(43, 47, 119, 0.08);
+        color: var(--admin-secondary);
+        font-size: 12px;
+        font-weight: 600;
     }
     .admin-chart.short {
         min-height: 240px;

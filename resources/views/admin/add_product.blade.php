@@ -46,6 +46,9 @@
                 <textarea name="description" placeholder="Describe the product" required></textarea>
             </div>
             <div class="admin-field full">
+                @include('admin.partials.ai_product_assistant')
+            </div>
+            <div class="admin-field full">
                 <label>Product image</label>
                 <input type="file" name="image" required>
             </div>

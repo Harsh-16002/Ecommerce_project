@@ -39,6 +39,9 @@
                 <label>Description</label>
                 <textarea name="description" required>{{ $data->description }}</textarea>
             </div>
+            <div class="admin-field full">
+                @include('admin.partials.ai_product_assistant')
+            </div>
             <div class="admin-field">
                 <label>Current image</label>
                 <img src="{{ asset('products/'.$data->image) }}" alt="{{ $data->title }}" class="admin-preview-image">

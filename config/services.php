@@ -35,4 +35,11 @@ return [
         ],
     ],
 
+    'ollama' => [
+        'enabled' => env('OLLAMA_ENABLED', false),
+        'base_url' => env('OLLAMA_BASE_URL', 'http://127.0.0.1:11434'),
+        'model' => env('OLLAMA_MODEL', 'phi3:mini'),
+        'timeout' => (int) env('OLLAMA_TIMEOUT', 45),
+    ],
+
 ];

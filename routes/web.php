@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AiController;
 use App\Http\Controllers\PaypalController;
 use App\Http\Controllers\PaymentController;
 
@@ -48,6 +49,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('admin/messages/{id}/read', [AdminController::class, 'mark_message_read'])->name('admin.messages.read');
     Route::get('admin/settings', [AdminController::class, 'settings'])->name('admin.settings.index');
     Route::post('admin/settings', [AdminController::class, 'update_settings'])->name('admin.settings.update');
+    Route::post('admin/ai/product-description', [AiController::class, 'productDescription'])->name('admin.ai.product-description');
 });
 
 Route::get('product_details/{id}', [HomeController::class, 'product_details']);
@@ -71,6 +73,7 @@ Route::get('paypal/payment', [PaypalController::class, 'payment'])
     ->name('paypal.payment');
 
 Route::post('order_data', [HomeController::class, 'order_data'])->middleware(['auth', 'verified']);
+Route::post('shop/ai-assistant', [AiController::class, 'shopAssistant'])->name('shop.ai.assistant');
 
 Route::get('myorders', [HomeController::class, 'myorders'])->middleware(['auth', 'verified']);
 Route::get('payment_cancel', [PaymentController::class, 'cancel'])->name('payment.cancel');
