@@ -57,11 +57,11 @@
                             <img src="{{ asset('products/'.$product->image) }}" alt="{{ $product->title }}">
                         @endif
                     </div>
-                    <div style="min-width: 0;">
+                    <div class="admin-min-zero">
                         <strong>{{ $product->title }}</strong>
                         <div class="admin-muted">{{ $product->category ?: 'Uncategorized' }}</div>
                     </div>
-                    <div style="text-align: right;">
+                    <div class="admin-align-end">
                         <strong>{{ (int) $product->units_sold }}</strong>
                         <div class="admin-muted">sold</div>
                     </div>
@@ -123,7 +123,7 @@
                     <div class="admin-muted">Dashboard-style source breakdown</div>
                 </div>
             </div>
-            <div class="admin-chart" style="min-height: 240px;">
+            <div class="admin-chart short">
                 <canvas id="trafficPieChart"></canvas>
             </div>
         </article>
@@ -140,7 +140,7 @@
                 @foreach($activityFeed as $item)
                     <div class="admin-list-item">
                         <div class="admin-list-thumb"><i class="fa fa-commenting-o"></i></div>
-                        <div style="min-width: 0;">
+                        <div class="admin-min-zero">
                             <strong>{{ $item['title'] }}</strong>
                             <div class="admin-muted">{{ $item['description'] }}</div>
                         </div>

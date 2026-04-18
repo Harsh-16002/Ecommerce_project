@@ -41,7 +41,7 @@
             </div>
             <div class="admin-field">
                 <label>Current image</label>
-                <img src="{{ asset('products/'.$data->image) }}" alt="{{ $data->title }}" style="width: 180px; height: 180px; object-fit: cover; border-radius: 16px;">
+                <img src="{{ asset('products/'.$data->image) }}" alt="{{ $data->title }}" class="admin-preview-image">
             </div>
             <div class="admin-field">
                 <label>Replace image</label>

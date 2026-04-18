@@ -44,12 +44,12 @@
                             <td><span class="admin-badge {{ $message->is_read ? 'delivered' : 'pending' }}">{{ $message->is_read ? 'Read' : 'Unread' }}</span></td>
                             <td>{{ $message->created_at?->format('d M Y h:i A') }}</td>
                             <td>
-                                <div style="display:grid;gap:8px;">
+                                <div class="admin-actions-stack">
                                     <a href="{{ route('admin.messages.show', $message->id) }}" class="admin-btn-outline">View</a>
                                     @if(! $message->is_read)
                                         <form method="POST" action="{{ route('admin.messages.read', $message->id) }}">
                                             @csrf
-                                            <button type="submit" class="admin-status-btn warning" style="width:100%;">Mark Read</button>
+                                            <button type="submit" class="admin-status-btn warning admin-fill-btn">Mark Read</button>
                                         </form>
                                     @endif
                                 </div>

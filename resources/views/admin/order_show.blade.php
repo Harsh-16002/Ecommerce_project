@@ -51,7 +51,7 @@
                 </div>
             </div>
 
-            <div class="admin-list" style="margin-bottom: 18px;">
+            <div class="admin-list compact" style="margin-bottom: 18px;">
                 <div class="admin-list-item">
                     <div class="admin-list-thumb">
                         @if($order->product?->image)
@@ -60,7 +60,7 @@
                             <i class="fa fa-cube"></i>
                         @endif
                     </div>
-                    <div style="min-width:0;">
+                    <div class="admin-min-zero">
                         <strong>{{ $order->product?->title ?? 'Archived product' }}</strong>
                         <div class="admin-muted">{{ $order->product?->category ?? 'Uncategorized' }} | Qty {{ $order->quantity }}</div>
                     </div>
@@ -78,10 +78,10 @@
                     </select>
                 </div>
                 <div class="admin-field">
-                    <button type="submit" class="admin-btn" style="width:100%;">Save Status</button>
+                    <button type="submit" class="admin-btn admin-fill-btn">Save Status</button>
                 </div>
                 <div class="admin-field">
-                    <a href="{{ route('admin.orders.invoice', $order->id) }}" class="admin-btn-outline" style="width:100%;">Print Invoice</a>
+                    <a href="{{ route('admin.orders.invoice', $order->id) }}" class="admin-btn-outline admin-fill-btn">Print Invoice</a>
                 </div>
             </form>
         </article>

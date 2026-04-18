@@ -21,7 +21,7 @@
                     <div class="admin-muted">{{ $message->created_at?->format('d M Y h:i A') }}</div>
                 </div>
             </div>
-            <div class="admin-list-item" style="align-items:flex-start;">
+            <div class="admin-list-item top">
                 <div>
                     <strong>Message</strong>
                     <div class="admin-muted" style="white-space:pre-line;">{{ $message->message }}</div>

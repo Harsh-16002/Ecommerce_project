@@ -51,11 +51,11 @@
                             </td>
                             <td>{{ $data->address }}, {{ $data->city }}, {{ $data->state }}, {{ $data->country }}, {{ $data->pincode }}</td>
                             <td>
-                                <div style="display:flex;align-items:center;gap:14px;">
+                                <div class="admin-media-row">
                                     @if($data->product?->image)
                                         <img src="{{ asset('products/'.$data->product->image) }}" alt="{{ $data->product->title }}">
                                     @endif
-                                    <div>
+                                    <div class="admin-min-zero">
                                         <strong>{{ $data->product?->title ?? 'Archived product' }}</strong>
                                         <div class="admin-muted">Qty {{ $data->quantity }} | Rs. {{ number_format((float) ($data->total_price ?? $data->product?->price), 2) }}</div>
                                     </div>
@@ -64,7 +64,7 @@
                             <td><span class="admin-badge payment">{{ $data->payment_status }}</span></td>
                             <td><span class="admin-badge {{ $statusClass }}">{{ $data->status }}</span></td>
                             <td>
-                                <form method="POST" action="{{ route('admin.orders.status', $data->id) }}" style="display:grid;gap:8px;min-width:180px;">
+                                <form method="POST" action="{{ route('admin.orders.status', $data->id) }}" class="admin-status-form">
                                     @csrf
                                     <select name="status">
                                         @foreach($orderStatuses as $status)
@@ -75,7 +75,7 @@
                                 </form>
                             </td>
                             <td>
-                                <div style="display:grid;gap:8px;">
+                                <div class="admin-actions-stack">
                                     <a href="{{ route('admin.orders.show', $data->id) }}" class="admin-btn-outline">View Order</a>
                                     <a href="{{ route('admin.orders.invoice', $data->id) }}" class="admin-btn-outline">Print PDF</a>
                                 </div>

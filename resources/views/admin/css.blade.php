@@ -375,6 +375,9 @@
         display: grid;
         gap: 12px;
     }
+    .admin-list.compact {
+        gap: 8px;
+    }
     .admin-list-item {
         display: flex;
         align-items: center;
@@ -384,6 +387,9 @@
         border-bottom: 1px solid #eef2fa;
     }
     .admin-list-item:last-child { border-bottom: none; }
+    .admin-list-item.top {
+        align-items: flex-start;
+    }
     .admin-list-thumb {
         width: 52px;
         height: 52px;
@@ -400,6 +406,39 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
+    }
+    .admin-min-zero {
+        min-width: 0;
+    }
+    .admin-align-end {
+        text-align: right;
+    }
+    .admin-media-row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        min-width: 0;
+    }
+    .admin-actions-stack {
+        display: grid;
+        gap: 8px;
+    }
+    .admin-status-form {
+        display: grid;
+        gap: 8px;
+        min-width: 180px;
+    }
+    .admin-fill-btn {
+        width: 100%;
+    }
+    .admin-preview-image {
+        width: min(180px, 100%);
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        border-radius: 16px;
+    }
+    .admin-chart.short {
+        min-height: 240px;
     }
     .admin-badge {
         display: inline-flex;
@@ -512,6 +551,18 @@
         .admin-stat-card { padding: 16px; }
         .admin-card-head,
         .admin-list-item { flex-direction: column; align-items: flex-start; }
+        .admin-media-row {
+            width: 100%;
+            align-items: flex-start;
+        }
+        .admin-status-form,
+        .admin-actions-stack,
+        .admin-align-end {
+            width: 100%;
+        }
+        .admin-align-end {
+            text-align: left;
+        }
         .admin-stats-grid,
         .admin-mini-grid,
         .admin-form-grid { grid-template-columns: 1fr; width: 100%; }
@@ -530,5 +581,6 @@
         .admin-nav-link,
         .admin-nav-disabled { padding: 11px 12px; }
         .admin-table { min-width: 680px; }
+        .admin-status-form { min-width: 150px; }
     }
 </style>
