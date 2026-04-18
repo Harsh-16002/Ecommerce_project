@@ -136,7 +136,7 @@
                                     <a href="{{ url('product_details', $product->id) }}" class="product-quick-btn" aria-label="View {{ $product->title }}">
                                         <i class="fa fa-eye"></i>
                                     </a>
-                                    <a href="{{ url('add_cart', $product->id) }}" class="product-quick-btn" aria-label="Add {{ $product->title }} to cart">
+                                    <a href="{{ auth()->check() ? url('add_cart', $product->id) : route('login') }}" class="product-quick-btn" aria-label="{{ auth()->check() ? 'Add ' . $product->title . ' to cart' : 'Login to add ' . $product->title . ' to cart' }}">
                                         <i class="fa fa-shopping-cart"></i>
                                     </a>
                                 </div>
@@ -154,7 +154,7 @@
                                 </div>
                                 <div class="product-buttons">
                                     <a href="{{ url('product_details', $product->id) }}" class="product-btn view">View</a>
-                                    <a href="{{ url('add_cart', $product->id) }}" class="product-btn cart">Add</a>
+                                    <a href="{{ auth()->check() ? url('add_cart', $product->id) : route('login') }}" class="product-btn cart">{{ auth()->check() ? 'Add' : 'Login for Cart' }}</a>
                                 </div>
                             </div>
                         </article>

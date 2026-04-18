@@ -59,7 +59,7 @@ Route::get('contact-us', [HomeController::class, 'contact_us'])->name('contact-u
 Route::get('add_cart/{id}', [HomeController::class, 'add_cart'])->middleware(['auth', 'verified']);
 Route::post('update_cart/{id}', [HomeController::class, 'update_cart'])->middleware(['auth', 'verified'])->name('cart.update');
 Route::get('mycart', [HomeController::class, 'mycart'])->middleware(['auth', 'verified']);
-Route::post('contact-us', [HomeController::class, 'store_contact_message'])->name('contact-us.store')->middleware(['auth', 'verified']);
+Route::post('contact-us', [HomeController::class, 'store_contact_message'])->name('contact-us.store');
 
 Route::get('remove_cart/{id}', [HomeController::class, 'remove_cart'])->middleware(['auth', 'verified']);
 

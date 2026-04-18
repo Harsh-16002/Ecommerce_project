@@ -1,6 +1,9 @@
 <header class="admin-topbar">
     <div class="admin-topbar-inner">
-        <div>
+        <div class="admin-topbar-heading">
+            <button type="button" class="admin-menu-toggle" data-admin-sidebar-toggle aria-label="Open navigation">
+                <i class="fa fa-bars"></i>
+            </button>
             <div class="admin-kicker">@yield('admin_kicker', 'Admin Panel')</div>
             <div class="admin-topbar-title">@yield('admin_title', 'Welcome back, Admin')</div>
             <div class="admin-topbar-subtitle">@yield('admin_subtitle', 'Manage products, orders, payments, and category structure from one place.')</div>

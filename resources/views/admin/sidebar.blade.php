@@ -1,4 +1,10 @@
 <aside class="admin-sidebar">
+    <div class="admin-sidebar-mobile-bar">
+        <span>Navigation</span>
+        <button type="button" class="admin-sidebar-close" data-admin-sidebar-close aria-label="Close navigation">
+            <i class="fa fa-times"></i>
+        </button>
+    </div>
     <a href="{{ route('admin.dashboard') }}" class="admin-brand">
         <span class="admin-brand-icon"><img src="{{ asset('images/marketverse-mark.svg') }}" alt="MarketVerse logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 14px;"></span>
         <div>

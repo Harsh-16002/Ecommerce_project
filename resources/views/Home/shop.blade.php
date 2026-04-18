@@ -11,7 +11,11 @@
                     <h1 class="section-title">Browse the full catalog</h1>
                     <p class="section-copy">Filter by category, search by keyword, and sort your live products without leaving the new premium storefront.</p>
                 </div>
-                <a href="{{ url('mycart') }}" class="solid-btn">Open Cart</a>
+                @auth
+                    <a href="{{ url('mycart') }}" class="solid-btn">Open Cart</a>
+                @else
+                    <a href="{{ route('login') }}" class="solid-btn">Login to Use Cart</a>
+                @endauth
             </div>
 
             <form action="{{ route('shop.index') }}" method="GET" class="grid-4 reveal" style="grid-template-columns: 1.4fr 1fr 1fr auto; margin-bottom: 28px;">
@@ -42,7 +46,7 @@
                                     <a href="{{ url('product_details', $product->id) }}" class="product-quick-btn" aria-label="View {{ $product->title }}">
                                         <i class="fa fa-eye"></i>
                                     </a>
-                                    <a href="{{ url('add_cart', $product->id) }}" class="product-quick-btn" aria-label="Add {{ $product->title }} to cart">
+                                    <a href="{{ auth()->check() ? url('add_cart', $product->id) : route('login') }}" class="product-quick-btn" aria-label="{{ auth()->check() ? 'Add ' . $product->title . ' to cart' : 'Login to add ' . $product->title . ' to cart' }}">
                                         <i class="fa fa-shopping-cart"></i>
                                     </a>
                                 </div>
@@ -59,7 +63,7 @@
                                 </div>
                                 <div class="product-buttons">
                                     <a href="{{ url('product_details', $product->id) }}" class="product-btn view">View</a>
-                                    <a href="{{ url('add_cart', $product->id) }}" class="product-btn cart">Add</a>
+                                    <a href="{{ auth()->check() ? url('add_cart', $product->id) : route('login') }}" class="product-btn cart">{{ auth()->check() ? 'Add' : 'Login for Cart' }}</a>
                                 </div>
                             </div>
                         </article>
