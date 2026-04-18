@@ -26,12 +26,12 @@ class HomeController extends Controller
         $deliveredOrders = Order::where('status', 'Delivered')->count();
         $totalRevenue = (float) Order::sum('total_price');
         $pendingOrders = Order::where('status', 'in progress')->count();
-        $lowStockProducts = Product::where('quantity', '<=', 5)->count();
+        $lowStockProducts = Product::whereRaw(Product::integerExpression('quantity') . ' <= ?', [5])->count();
         $averageOrderValue = $totalOrders > 0 ? $totalRevenue / $totalOrders : 0;
         $conversionRate = $totalOrders > 0 ? ($deliveredOrders / $totalOrders) * 100 : 0;
 
         $recentOrders = Order::with(['product:id,title,image,category', 'user:id,name'])
-            ->latest()
+            ->latest('id')
             ->take(6)
             ->get();
 
@@ -51,7 +51,7 @@ class HomeController extends Controller
             ->take(5)
             ->get();
 
-        $lowStockItems = Product::orderBy('quantity')->take(5)->get();
+        $lowStockItems = Product::orderByRaw(Product::integerExpression('quantity') . ' asc')->take(5)->get();
 
         $categorySales = Order::join('products', 'orders.product_id', '=', 'products.id')
             ->select(
@@ -460,17 +460,17 @@ class HomeController extends Controller
         }
 
         match ($sort) {
-            'price_low' => $productQuery->orderByRaw('CAST(price AS DECIMAL(10,2)) asc'),
-            'price_high' => $productQuery->orderByRaw('CAST(price AS DECIMAL(10,2)) desc'),
-            'stock' => $productQuery->orderByRaw('CAST(quantity AS SIGNED) desc'),
-            default => $productQuery->latest(),
+            'price_low' => $productQuery->orderByRaw(Product::decimalExpression('price') . ' asc'),
+            'price_high' => $productQuery->orderByRaw(Product::decimalExpression('price') . ' desc'),
+            'stock' => $productQuery->orderByRaw(Product::integerExpression('quantity') . ' desc'),
+            default => $productQuery->latest('id'),
         };
 
         $catalogProducts = $isShop
             ? $productQuery->paginate(12)->withQueryString()
             : $productQuery->get();
 
-        $allProducts = Product::latest()->get();
+        $allProducts = Product::latest('id')->get();
         $categories = Category::orderBy('category_name')
             ->get()
             ->map(function (Category $category) {

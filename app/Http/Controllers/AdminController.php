@@ -11,6 +11,7 @@ use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class AdminController extends Controller
@@ -98,7 +99,7 @@ class AdminController extends Controller
             'stats' => [
                 'categories' => Category::count(),
                 'products' => Product::count(),
-                'low_stock' => Product::where('quantity', '<=', 5)->count(),
+                'low_stock' => Product::whereRaw(Product::integerExpression('quantity') . ' <= ?', [5])->count(),
             ],
         ]);
     }
@@ -137,15 +138,15 @@ class AdminController extends Controller
 
     public function view_product(): View
     {
-        $data = Product::latest()->paginate(8);
+        $data = Product::latest('id')->paginate(8);
 
         return view('admin.view_product', [
             'data' => $data,
             'stats' => [
                 'products' => Product::count(),
                 'categories' => Category::count(),
-                'inventory_units' => (int) Product::sum('quantity'),
-                'low_stock' => Product::where('quantity', '<=', 5)->count(),
+                'inventory_units' => (int) Product::sum(DB::raw(Product::integerExpression('quantity'))),
+                'low_stock' => Product::whereRaw(Product::integerExpression('quantity') . ' <= ?', [5])->count(),
             ],
         ]);
     }
@@ -215,7 +216,7 @@ class AdminController extends Controller
                     ->orWhere('category', 'LIKE', '%' . $search . '%')
                     ->orWhere('description', 'LIKE', '%' . $search . '%');
             })
-            ->latest()
+            ->latest('id')
             ->paginate(8)
             ->withQueryString();
 
@@ -224,8 +225,8 @@ class AdminController extends Controller
             'stats' => [
                 'products' => Product::count(),
                 'categories' => Category::count(),
-                'inventory_units' => (int) Product::sum('quantity'),
-                'low_stock' => Product::where('quantity', '<=', 5)->count(),
+                'inventory_units' => (int) Product::sum(DB::raw(Product::integerExpression('quantity'))),
+                'low_stock' => Product::whereRaw(Product::integerExpression('quantity') . ' <= ?', [5])->count(),
             ],
             'searchTerm' => $search,
         ]);

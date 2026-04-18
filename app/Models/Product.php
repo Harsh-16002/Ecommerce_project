@@ -22,4 +22,26 @@ class Product extends Model
         'price' => 'decimal:2',
         'quantity' => 'integer',
     ];
+
+    public static function integerExpression(string $column): string
+    {
+        $instance = new static();
+        $query = $instance->newQuery()->getQuery();
+        $wrappedColumn = $query->getGrammar()->wrap($column);
+        $driver = $instance->getConnection()->getDriverName();
+
+        return match ($driver) {
+            'pgsql' => "CAST($wrappedColumn AS INTEGER)",
+            default => "CAST($wrappedColumn AS SIGNED)",
+        };
+    }
+
+    public static function decimalExpression(string $column): string
+    {
+        $instance = new static();
+        $query = $instance->newQuery()->getQuery();
+        $wrappedColumn = $query->getGrammar()->wrap($column);
+
+        return "CAST($wrappedColumn AS DECIMAL(10,2))";
+    }
 }
